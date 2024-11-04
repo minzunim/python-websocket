@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Chat</title>
+</head>
+
+<body>
+    <h1>WebSocket Chat Room</h1>
+    <input id="room_id" type="text" placeholder="Enter Room ID" />
+    <input id="client_id" type="text" placeholder="Enter Your Name" />
+    <button id="connect">Connect</button>
+    <div><input id="message" type="text" placeholder="Type a message" />
+        <button id="send">Send</button>
+    </div>
+
+    <div id="messages"></div>
+
+    <script>
+        let websocket;
+
+        document.getElementById('connect').onclick = function () {
+            const roomId = document.getElementById('room_id').value;
+            const clientId = document.getElementById('client_id').value;
+
+            websocket = new WebSocket(`ws://localhost:8000/ws/${roomId}/${clientId}`);
+
+            const messagesDiv = document.getElementById('messages');
+
+            // 최초 연결 시 한번 등록
+            // 메시지를 수신
+            websocket.onmessage = function (event) {
+                messagesDiv.innerHTML += `<p>${event.data}</p>`;
+            };
+
+            // 연결을 끊을 때
+            websocket.onclose = function (event) {
+                console.log('Connection closed', event);
+            };
+        };
+
+        // 메시지 전달 시
+        document.getElementById('send').onclick = function () {
+            const messageInput = document.getElementById('message');
+            const message = messageInput.value;
+            console.log('message', message);
+            websocket.send(message);
+
+            messageInput.value = '';  // 입력란 비우기
+        };
+    </script>
+</body>
+
+</html>
