@@ -30,7 +30,8 @@
             const roomId = document.getElementById('room_id').value;
             const clientId = document.getElementById('client_id').value;
 
-            websocket = new WebSocket(`ws://localhost:8000/ws/${roomId}/${clientId}`);
+            // ws://localhost:8000/ws/${roomId}/${clientId}
+            websocket = new WebSocket(`ws://3.36.25.113:8000/ws/${roomId}/${clientId}`);
 
             const messagesDiv = document.getElementById('messages');
 
