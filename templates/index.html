@@ -8,12 +8,11 @@
 </head>
 
 <body>
-    <h1>WebSocket Chat Room</h1>
-    <input id="room_id" type="text" placeholder="Enter Room ID" />
-    <input id="client_id" type="text" placeholder="Enter Your Name" />
-    <button id="connect">Connect</button>
-    <div><input id="message" type="text" placeholder="Type a message" />
-        <button id="send">Send</button>
+    <input id="room_id" type="text" placeholder="room id" />
+    <input id="client_id" type="text" placeholder="이름" />
+    <button id="connect">연결</button>
+    <div><input id="message" type="text" placeholder="메세지 입력" />
+        <button id="send">전송</button>
     </div>
 
     <div id="messages"></div>
@@ -22,7 +21,6 @@
         let websocket;
 
         const isMobile = /Mobi/i.test(window.navigator.userAgent);
-        console.log("🚀 ~ isMobile:", isMobile);
 
         const connect = document.getElementById('connect');
 
@@ -32,13 +30,14 @@
 
             // ws://localhost:8000/ws/${roomId}/${clientId}
             websocket = new WebSocket(`ws://3.36.25.113:8000/ws/${roomId}/${clientId}`);
+            // console.log('date', date);
 
             const messagesDiv = document.getElementById('messages');
 
             // 최초 연결 시 한번 등록
             // 메시지를 수신
             websocket.onmessage = function (event) {
-                messagesDiv.innerHTML += `<p>${event.data}</p>`;
+                messagesDiv.innerHTML += `<p>#client_id ${event.data}</p>`;
             };
 
             // 연결을 끊을 때

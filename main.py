@@ -18,8 +18,10 @@ class ConnectionManager:
         if room_id not in self.rooms:
             self.rooms[room_id] = []
         self.rooms[room_id].append(websocket)
+
+        print(self.rooms)
         
-        await self.broadcast(room_id, f"{client_id} 님이 입장했습니다.")
+        await self.broadcast(room_id, f"[#client_id: {client_id}] 연결 완료")
 
     def disconnect(self, room_id: int, websocket: WebSocket):
         self.rooms[room_id].remove(websocket)
@@ -34,7 +36,6 @@ class ConnectionManager:
             try:
                 await connection.send_text(message)
             except Exception as e:
-            # 에러 로그를 남기거나 연결을 제거하는 로직을 추가할 수 있습니다.
                 print(f"Error sending message to connection: {e}")
                 
 
